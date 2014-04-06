@@ -1,11 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import java.util.*;
 
 public class Calculator extends JFrame {
 
-	Scanner in = new Scanner(System.in);
 	private static JButton add = new JButton("+");
 	private static JButton less = new JButton("-");
 	private static JButton tan = new JButton("tanx");
@@ -17,15 +18,9 @@ public class Calculator extends JFrame {
 	private static JButton inverse = new JButton("1/x");
 	private static JButton equal = new JButton("=");
 	private static JLabel result = new JLabel("0", JLabel.RIGHT);
-	private static JTextField password = new JTextField(10);
-	private static JButton pwc = new JButton("Confirm");
 	private static JButton digits[] = new JButton[10];
 	private static long num;
 	private static byte op;
-	
-	private static int ps;
-
-
 
 	public Calculator() {
 
@@ -73,12 +68,13 @@ public class Calculator extends JFrame {
 		equal.addActionListener(new ActLis());
 		clean.addActionListener(new ActLis());
 		tan.addActionListener(new ActLis());
-	}
-
-	public void getp(ActionEvent e) {
-		if (e.getSource() == pwc) {
-			ps = Integer.parseInt(password.getText());
-		}
+		
+		this.setTitle("小算盤");
+		this.setSize(300, 380);
+		this.setVisible(true);
+		this.setResizable(false); // 不能放大視窗
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public static class ActLis implements ActionListener {
@@ -128,7 +124,6 @@ public class Calculator extends JFrame {
 				} else if (btn == equal) {
 					out = Long.parseLong(result.getText());
 
-					
 					switch (op) {
 					case 1:
 						num += out;
@@ -167,17 +162,6 @@ public class Calculator extends JFrame {
 			result.setText(Long.toString(0));
 		}
 	}
-	
-	
-	/** Main method */
-	public static void main(String[] args) {
 
-		Calculator frame = new Calculator();
-		frame.setTitle("小算盤");
-		frame.setSize(300, 380);
-		frame.setVisible(true);
-		frame.setResizable(false); // 不能放大視窗
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+
 }
