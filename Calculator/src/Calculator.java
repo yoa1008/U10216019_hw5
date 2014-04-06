@@ -1,29 +1,31 @@
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
-
-import java.lang.*;
+import java.util.*;
 
 public class Calculator extends JFrame {
 
+	Scanner in = new Scanner(System.in);
 	private static JButton add = new JButton("+");
 	private static JButton less = new JButton("-");
-	private static JButton tan = new JButton(".");
+	private static JButton tan = new JButton("tanx");
 	private static JButton sin = new JButton("sinx");
 	private static JButton cos = new JButton("cosx");
 	private static JButton clean = new JButton("C");
 	private static JButton mul = new JButton("x");
-	private static JButton div = new JButton("/");
+	private static JButton div = new JButton("÷");
 	private static JButton inverse = new JButton("1/x");
 	private static JButton equal = new JButton("=");
 	private static JLabel result = new JLabel("0", JLabel.RIGHT);
 	private static JTextField password = new JTextField(10);
 	private static JButton pwc = new JButton("Confirm");
-
 	private static JButton digits[] = new JButton[10];
 	private static long num;
 	private static byte op;
+	
+	private static int ps;
+
+
 
 	public Calculator() {
 
@@ -47,8 +49,8 @@ public class Calculator extends JFrame {
 		p2.add(cos);
 		p2.add(mul);
 		p2.add(tan);
-		p2.add(inverse);
 		p2.add(div);
+		p2.add(inverse);
 
 		//
 		JPanel p3 = new JPanel();
@@ -56,18 +58,9 @@ public class Calculator extends JFrame {
 		result.setBackground(new Color(240, 220, 190));
 
 		//
-		JPanel p4 = new JPanel();
-		p4.setLayout(new GridLayout(1, 3));
-		p4.add(new JLabel("The password :"));
-		p4.add(password);
-		p4.add(pwc);
-		pwc.setBackground(new Color(200, 150, 120));
-
-		//
 		add(p1, BorderLayout.CENTER);
 		add(p2, BorderLayout.EAST);
 		add(p3, BorderLayout.NORTH);
-		add(p4, BorderLayout.SOUTH);
 
 		//
 		mul.addActionListener(new ActLis());
@@ -80,15 +73,20 @@ public class Calculator extends JFrame {
 		equal.addActionListener(new ActLis());
 		clean.addActionListener(new ActLis());
 		tan.addActionListener(new ActLis());
+	}
 
+	public void getp(ActionEvent e) {
+		if (e.getSource() == pwc) {
+			ps = Integer.parseInt(password.getText());
+		}
 	}
 
 	public static class ActLis implements ActionListener {
 
 		public void actionPerformed(ActionEvent e)
 				throws NumberFormatException, ArithmeticException {
-			long out;
 
+			long out;
 			JButton btn = (JButton) e.getSource();
 			try {
 				// 處理數字1~9
@@ -99,8 +97,8 @@ public class Calculator extends JFrame {
 					}
 				}
 				if (btn == clean) {
-					out = 0L; // 把儲存的結果歸0
-					num = 0L;
+					out = 0; // 把儲存的結果歸0
+					num = 0;
 					op = 0;
 					result.setText(Long.toString(num));
 				} else if (btn == add) { // 加
@@ -115,9 +113,22 @@ public class Calculator extends JFrame {
 				} else if (btn == div) { // 除
 					save_num(div);
 					op = 4;
+				} else if (btn == sin) { // sin
+					save_num(sin);
+					op = 5;
+				} else if (btn == cos) { // cos
+					save_num(cos);
+					op = 6;
+				} else if (btn == tan) { // tan
+					save_num(tan);
+					op = 7;
+				} else if (btn == inverse) { // 倒數
+					save_num(inverse);
+					op = 8;
 				} else if (btn == equal) {
 					out = Long.parseLong(result.getText());
 
+					
 					switch (op) {
 					case 1:
 						num += out;
@@ -131,9 +142,10 @@ public class Calculator extends JFrame {
 					case 4:
 						num /= out;
 						break;
+
 					default:
 					}
-					out = 0L;
+
 					// 輸出運算後的結果到顯示器
 					result.setText(Long.toString(num));
 				}
@@ -152,18 +164,20 @@ public class Calculator extends JFrame {
 
 		private void save_num(JButton oper) {
 			num = Long.parseLong(result.getText());
-			result.setText(Long.toString(0L));
+			result.setText(Long.toString(0));
 		}
 	}
-
+	
+	
 	/** Main method */
 	public static void main(String[] args) {
+
 		Calculator frame = new Calculator();
-		frame.setTitle("Calculator");
+		frame.setTitle("小算盤");
 		frame.setSize(300, 380);
 		frame.setVisible(true);
+		frame.setResizable(false); // 不能放大視窗
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
 }
