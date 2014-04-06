@@ -1,30 +1,26 @@
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
-import java.util.*;
+
 
 public class Calculator extends JFrame {
 
-	private static JButton add = new JButton("+");
-	private static JButton less = new JButton("-");
-	private static JButton tan = new JButton("tanx");
-	private static JButton sin = new JButton("sinx");
-	private static JButton cos = new JButton("cosx");
-	private static JButton clean = new JButton("C");
-	private static JButton mul = new JButton("x");
-	private static JButton div = new JButton("÷");
-	private static JButton inverse = new JButton("1/x");
-	private static JButton equal = new JButton("=");
-	private static JLabel result = new JLabel("0", JLabel.RIGHT);
-	private static JButton digits[] = new JButton[10];
+	// Create 按鈕
+	private static JButton add = new JButton("+"); // The add button
+	private static JButton less = new JButton("-"); // The subtraction button
+	private static JButton clean = new JButton("C"); // The clean button
+	private static JButton mul = new JButton("x"); // 乘紐
+	private static JButton div = new JButton("÷"); // 除紐
+	private static JButton equal = new JButton("="); // The equal button
+	private static JLabel result = new JLabel("0", JLabel.RIGHT); // Label to show the number and result
+	private static JButton digits[] = new JButton[10]; // Number from 0 to 9
 	private static long num;
-	private static byte op;
+	private static byte op; // 運算子
 
 	public Calculator() {
 
-		//
+		//數字0~9以及 C , =
 		JPanel p1 = new JPanel();
 		p1.setLayout(new GridLayout(4, 3));
 		for (int i = 9; i >= 0; i--) {
@@ -35,42 +31,36 @@ public class Calculator extends JFrame {
 		p1.add(clean);
 		p1.add(equal);
 
-		//
+		// +, -, *, /, sin, cos, tan, inverse紐
 		JPanel p2 = new JPanel();
-		p2.setLayout(new GridLayout(4, 2));
+		p2.setLayout(new GridLayout(4, 1));
 		p2.add(add);
-		p2.add(sin);
 		p2.add(less);
-		p2.add(cos);
 		p2.add(mul);
-		p2.add(tan);
 		p2.add(div);
-		p2.add(inverse);
+
 
 		//
 		JPanel p3 = new JPanel();
 		p3.add(result);
-		result.setBackground(new Color(240, 220, 190));
+		result.setForeground(Color.RED); // Change the color of the result
 
 		//
 		add(p1, BorderLayout.CENTER);
 		add(p2, BorderLayout.EAST);
 		add(p3, BorderLayout.NORTH);
 
-		//
+		// 按下按鈕時執行按鈕
 		mul.addActionListener(new ActLis());
 		div.addActionListener(new ActLis());
-		sin.addActionListener(new ActLis());
-		cos.addActionListener(new ActLis());
-		inverse.addActionListener(new ActLis());
 		add.addActionListener(new ActLis());
 		less.addActionListener(new ActLis());
 		equal.addActionListener(new ActLis());
 		clean.addActionListener(new ActLis());
-		tan.addActionListener(new ActLis());
 		
-		this.setTitle("小算盤");
-		this.setSize(300, 380);
+		// The window of the calculator
+		this.setTitle("小算盤 (Easy)");
+		this.setSize(270, 380);
 		this.setVisible(true);
 		this.setResizable(false); // 不能放大視窗
 		this.setLocationRelativeTo(null);
@@ -109,21 +99,10 @@ public class Calculator extends JFrame {
 				} else if (btn == div) { // 除
 					save_num(div);
 					op = 4;
-				} else if (btn == sin) { // sin
-					save_num(sin);
-					op = 5;
-				} else if (btn == cos) { // cos
-					save_num(cos);
-					op = 6;
-				} else if (btn == tan) { // tan
-					save_num(tan);
-					op = 7;
-				} else if (btn == inverse) { // 倒數
-					save_num(inverse);
-					op = 8;
 				} else if (btn == equal) {
 					out = Long.parseLong(result.getText());
 
+					// 運算
 					switch (op) {
 					case 1:
 						num += out;
@@ -136,8 +115,9 @@ public class Calculator extends JFrame {
 						break;
 					case 4:
 						num /= out;
+						if(out == 0)
+							System.out.println("The number you enter can't be 0");
 						break;
-
 					default:
 					}
 
@@ -151,17 +131,19 @@ public class Calculator extends JFrame {
 			}
 		}
 
+		
+		// Show out the number
 		@SuppressWarnings("deprecation")
 		private void output_digit(JButton btn) {
 			result.setText(Long.toString(Long.parseLong(result.getText()
 					+ btn.getLabel())));
 		}
-
+		
+		// Save the number
 		private void save_num(JButton oper) {
 			num = Long.parseLong(result.getText());
 			result.setText(Long.toString(0));
 		}
 	}
-
 
 }
